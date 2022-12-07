@@ -7,7 +7,7 @@ from api import episode
 
 
 class Anime:
-    def __init__(self, title: str, id: int, url: str, ep_count = -1):
+    def __init__(self, title: str, id: int, url: str, ep_count=-1):
         self.title = str(title)
         self.id = int(id)
         self.url = str(url)
@@ -53,8 +53,17 @@ class Anime:
                 ep_list.append(episode.Episode(ep["title"], ep["data-number"], ep["data-id"]))
         return ep_list
 
+    def check_new_episode_came_out(self) -> bool:
+        if self.ep_count != self.get_ep_count():
+            return True
+        self.update_ep_count()
+        return False
+
+    def get_ep_count(self) -> int:
+        return int(self.get_ep_list()[-1].ep_num)
+
     def update_ep_count(self) -> int:
-        self.ep_count = self.get_ep_list()[-1].ep_num
+        self.ep_count = self.get_ep_count()
         return self.ep_count
 
     @staticmethod

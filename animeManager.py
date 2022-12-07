@@ -11,7 +11,6 @@ class AnimeManager:
     def write_data(self):
         anime_dict_list = []
         for a in self.anime_list:
-            a.update_ep_count()
             print(a.to_dict())
             anime_dict_list.append(a.to_dict())
 
