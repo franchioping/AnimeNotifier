@@ -8,10 +8,10 @@ from api import episode
 
 class Anime:
     def __init__(self, title: str, id: int, url: str, ep_count = -1):
-        self.title = title
-        self.id = id
-        self.url = url
-        self.ep_count = ep_count
+        self.title = str(title)
+        self.id = int(id)
+        self.url = str(url)
+        self.ep_count = int(ep_count)
 
     def get_ep_list(self) -> list[episode.Episode]:
         """
