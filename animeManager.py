@@ -5,8 +5,13 @@ from api import anime
 class AnimeManager:
     def __init__(self, file_name: str):
         self.file_name = file_name
-        self.anime_list = []
+        self.anime_list: list[anime.Anime] = []
         self.load_data()
+
+    def check_for_new_episodes(self, callback):
+        for a in self.anime_list:
+            if a.check_new_episode_came_out():
+                callback(a)
 
     def write_data(self):
         anime_dict_list = []
