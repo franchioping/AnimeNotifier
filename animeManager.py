@@ -26,4 +26,4 @@ class AnimeManager:
         with open(self.file_name, "r") as f:
             data = json.load(f)
             for obj in data["anime_list"]:
-                self.anime_list.append(anime.Anime.from_json(obj))
+                self.anime_list.append(anime.Anime.from_dict(obj))

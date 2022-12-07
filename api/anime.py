@@ -58,7 +58,7 @@ class Anime:
         return self.ep_count
 
     @staticmethod
-    def from_json(json_dct):
+    def from_dict(json_dct):
         return Anime(json_dct["title"], json_dct["id"], json_dct["url"], json_dct["ep_count"])
 
     def to_dict(self):
