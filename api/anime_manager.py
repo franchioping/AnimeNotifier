@@ -37,7 +37,7 @@ class AnimeManager:
                     self.anime_list.append(anime.Anime.from_dict(obj))
         else:
             with open(self.file_name, "w") as f:
-                json.dump({"anime_list": []}, f)
+                json.dump({"anime_list": []}, f, indent=4)
 
     def add_anime(self, anim: anime.Anime) -> int:
         if self.check_if_anime_is_in_list(anim.id):
