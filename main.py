@@ -70,15 +70,38 @@ async def list_anime_command(interaction: discord.Interaction):
 
 @client.tree.command(name="reset_server_command")
 async def reset_server_command(interaction: discord.Interaction):
+    await interaction.response.defer()
+
     chs = g_man.anime_category.channels
     for c in chs:
         await c.delete()
-    for r in g_man.guild.roles:
-        if r is not g_man.guild.default_role:
-            try:
-                await r.delete()
-            except Exception:
-                print(r.name)
+
+    anime_list = g_man.a_man.anime_list
+    anime_id_list = []
+    for a in anime_list:
+        anime_id_list.append(a.id)
+    for id in anime_id_list:
+        await g_man.get_anime_role(id).delete()
+
+    g_man.reset()
+
+    g_man.load()
+    g_man.a_man.load()
+    g_man.u_man.load()
+
+    g_man.load()
+    g_man.a_man.load()
+    g_man.u_man.load()
+
+    await interaction.followup.send("Done maybe not really IDGAF", ephemeral=True)
+
+
+@client.tree.command(name="set-anime-category")
+async def set_anime_category_command(interaction: discord.Interaction, cat: discord.CategoryChannel):
+    g_man.anime_category = cat
+    g_man.anime_category_id = cat.id
+    g_man.dump()
+
     await interaction.response.send_message("Done maybe not really IDGAF", ephemeral=True)
 
 

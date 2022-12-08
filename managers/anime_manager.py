@@ -16,6 +16,9 @@ class AnimeManager:
             if a.check_new_episode_came_out():
                 await callback(a)
 
+    def reset(self):
+        os.remove(self.file_name)
+
     def dump(self):
         anime_dict_list = []
         for a in self.anime_list:

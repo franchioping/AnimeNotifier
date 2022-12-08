@@ -29,6 +29,11 @@ class GuildManager:
             id=self.anime_category_id
         )
 
+    def reset(self):
+        self.a_man.reset()
+        self.u_man.reset()
+        os.remove(self.guild_file_name)
+
     async def create_anime_role(self, name: str):
         return await self.guild.create_role(name=name)
 

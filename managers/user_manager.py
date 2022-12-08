@@ -13,6 +13,8 @@ class AnimeUser:
             ret.append(a_man.get_anime_from_id(ani_id))
         return ret
 
+
+
     def add_anime(self, a: Anime):
         self.anime_id_list.append(a.id)
 
@@ -37,9 +39,12 @@ class UserManager:
     def __init__(self, file_name: str):
         self.file_name: str = file_name
         self.user_list: list[AnimeUser] = []
-        self._load()
+        self.load()
 
-    def _load(self):
+    def reset(self):
+        os.remove(self.file_name)
+
+    def load(self):
         if os.path.exists(self.file_name):
             with open(self.file_name, "r") as f:
                 obj = json.load(f)
