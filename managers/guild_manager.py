@@ -46,18 +46,18 @@ class GuildManager:
 
         return channel
 
-    async def add_anime_to_user(self, anime: Anime, user: discord.User):
+    async def add_anime_to_user(self, anime: Anime, user: discord.Member):
         if not self.check_anime_in_guild(anime.id):
             await self.add_anime(anime)
 
         self.u_man.get_user(user.id).add_anime(anime)
         self.u_man.dump()
 
-        await self.guild.get_member(user.id).add_roles(self.get_anime_role(anime.id))
+        await user.add_roles(self.get_anime_role(anime.id))
 
-    async def remove_anime_from_user(self, anime: Anime, user: discord.User):
+    async def remove_anime_from_user(self, anime: Anime, user: discord.Member):
         self.u_man.get_user(user.id).remove_anime(anime)
-        await self.guild.get_member(user.id).remove_roles(self.get_anime_role(anime.id))
+        await user.remove_roles(self.get_anime_role(anime.id))
 
     async def add_anime(self, anime: Anime):
         self.a_man.add_anime(anime)
