@@ -67,11 +67,15 @@ class AnimeAPI:
             # <a href="/watch/one-piece-100" title="One Piece" class="dynamic-name" data-jname="One Piece">One Piece</a>
             dynamic_name = film_name.find("a", {"class": "dynamic-name"})
 
+            # image
+            img_obj = i.find_next("div", {"class": "film-poster"})
+            img_url = img_obj.find("img")["data-src"]
+
             title = dynamic_name["title"]
             url = dynamic_name["href"]
             anime_id = int(i["data-id"])
 
-            a = anime.Anime(title, anime_id, url)
+            a = anime.Anime(title, anime_id, url, img_url)
             ret.append(a)
             if len(ret) >= length:
                 break

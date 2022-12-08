@@ -7,10 +7,11 @@ from api import episode
 
 
 class Anime:
-    def __init__(self, title: str, id: int, url: str, ep_count=-1):
+    def __init__(self, title: str, id: int, url: str, img_url: str, ep_count=-1):
         self.title = str(title)
         self.id = int(id)
         self.url = str(url)
+        self.img_url = img_url
         self.ep_count = int(ep_count)
 
     def get_ep_list(self) -> list[episode.Episode]:
@@ -52,6 +53,11 @@ class Anime:
             for ep in eps:
                 ep_list.append(episode.Episode(ep["title"], ep["data-number"], ep["data-id"]))
         return ep_list
+
+    def get_description(self) -> str:
+        req = r.get(BASE_URL + self.url)
+        soup = bs4.BeautifulSoup(req.text,  features="html.parser")
+        return soup.find("meta", {"name": "description"})["content"]
 
     def check_new_episode_came_out(self) -> bool:
         if self.ep_count != self.get_ep_count():
