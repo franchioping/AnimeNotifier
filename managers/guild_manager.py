@@ -1,6 +1,7 @@
 import json
 
 import discord
+import os
 
 from api.anime import Anime
 
@@ -16,10 +17,10 @@ class GuildManager:
         self.client = client
         self.guild = self.client.get_guild(guild_id)
 
-        self.a_man = AnimeManager(anime_file_name)
-        self.u_man = UserManager(users_file_name)
+        self.a_man = AnimeManager(os.getcwd() + "/" + anime_file_name)
+        self.u_man = UserManager(os.getcwd() + "/" + users_file_name)
 
-        self.guild_file_name = guild_file_name
+        self.guild_file_name = os.getcwd() + "/" + guild_file_name
 
         self.anime_data = {}
         self.anime_category_id = -1
@@ -84,7 +85,7 @@ class GuildManager:
                 self.anime_category_id = data["anime_category_id"]
         else:
             with open(self.guild_file_name, "w") as f:
-                json.dump({"anime_category_id": 0, "anime_data": {}}, f)
+                json.dump({"anime_category_id": 0, "anime_data": {}}, f, indent=4)
 
     def dump(self):
         with open(self.guild_file_name, "r") as f:

@@ -14,9 +14,11 @@ g_man: GuildManager
 load_dotenv()
 
 token = os.getenv("TOKEN")
+guild = int(os.getenv("GUILD"))
 assert token is not None
+assert guild is not None
 
-MY_GUILD = discord.Object(id=1042133536926347324)  # replace with your guild id
+MY_GUILD = discord.Object(id=guild)  # replace with your guild id
 
 
 class MyClient(discord.Client):
@@ -36,7 +38,7 @@ client = MyClient(intents=intents)
 @client.event
 async def on_ready():
     global g_man
-    g_man = GuildManager(client, 1042133536926347324)
+    g_man = GuildManager(client, guild)
     check_for_new_manga.start()
 
 
@@ -64,10 +66,11 @@ async def search_anime_command(interaction: discord.Interaction, anime_name: str
 
 @client.tree.command(name="list-anime")
 async def list_anime_command(interaction: discord.Interaction):
-    anime_list = g_man.u_man.get_user(interaction.user.id).get_anime_list()
+    anime_list = g_man.u_man.get_user(interaction.user.id).get_anime_list(g_man.a_man)
     await list_anime_in_msg(interaction, anime_list)
 
 
+"""
 @client.tree.command(name="reset_server_command")
 async def reset_server_command(interaction: discord.Interaction):
     await interaction.response.defer()
@@ -94,15 +97,19 @@ async def reset_server_command(interaction: discord.Interaction):
     g_man.u_man.load()
 
     await interaction.followup.send("Done maybe not really IDGAF", ephemeral=True)
+"""
 
 
 @client.tree.command(name="set-anime-category")
 async def set_anime_category_command(interaction: discord.Interaction, cat: discord.CategoryChannel):
-    g_man.anime_category = cat
-    g_man.anime_category_id = cat.id
-    g_man.dump()
+    if not interaction.user.guild_permissions.administrator:
+        await interaction.response.send_message("You shouldn't be here, bye!", ephemeral=True)
+    else:
+        g_man.anime_category = cat
+        g_man.anime_category_id = cat.id
+        g_man.dump()
 
-    await interaction.response.send_message("Done maybe not really IDGAF", ephemeral=True)
+        await interaction.response.send_message("Done maybe not really IDGAF", ephemeral=True)
 
 
 @tasks.loop(seconds=60)
