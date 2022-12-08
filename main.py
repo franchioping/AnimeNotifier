@@ -49,5 +49,4 @@ async def search_anime_command(interaction: discord.Interaction, anime_name: str
     await view.wait()
     print(view.ret)
 
-
 client.run(token)

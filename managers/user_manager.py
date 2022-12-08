@@ -1,6 +1,4 @@
-import json
-
-from api.anime_manager import *
+from anime_manager import *
 import os
 
 
