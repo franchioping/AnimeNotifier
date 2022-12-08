@@ -9,10 +9,11 @@ from globals import *
 class AnimeAPI:
 
     @staticmethod
-    def search(anime_name: str) -> list[anime.Anime]:
+    def search(anime_name: str, length: int = 30) -> list[anime.Anime]:
         """
         use the sites built-in search to look for anime
 
+        :param length: how many results do ypu want. max is 30
         :param anime_name: anime name to search, doesn't need to be exact, as this will return best matches
         :return: list of instances of anime.Anime class
         """
@@ -72,4 +73,6 @@ class AnimeAPI:
 
             a = anime.Anime(title, anime_id, url)
             ret.append(a)
+            if len(ret) >= length:
+                break
         return ret
