@@ -1,11 +1,18 @@
 {
     "anime_list": [
         {
-            "title": "One Punch Man",
-            "id": 63,
-            "url": "/watch/one-punch-man-63",
-            "img_url": "https://img.bunnycdnn.ru/_r/300x400/100/f5/d1/f5d173f8317f592c6c70d594829b89e4/f5d173f8317f592c6c70d594829b89e4.jpg",
-            "ep_count": -1
+            "title": "More than a married couple, but not lovers.",
+            "id": 18164,
+            "url": "/watch/more-than-a-married-couple-but-not-lovers-18164",
+            "img_url": "https://img.bunnycdnn.ru/_r/300x400/100/dc/d7/dcd76e41104504a3490f56903452c2cc/dcd76e41104504a3490f56903452c2cc.jpg",
+            "ep_count": 9
+        },
+        {
+            "title": "One Piece",
+            "id": 100,
+            "url": "/watch/one-piece-100",
+            "img_url": "https://img.bunnycdnn.ru/_r/300x400/100/54/90/5490cb32786d4f7fef0f40d7266df532/5490cb32786d4f7fef0f40d7266df532.jpg",
+            "ep_count": 1043
         }
     ]
 }

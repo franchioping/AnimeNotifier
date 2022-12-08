@@ -54,6 +54,9 @@ class Anime:
                 ep_list.append(episode.Episode(ep["title"], ep["data-number"], ep["data-id"]))
         return ep_list
 
+    def get_latest_episode(self):
+        return self.get_ep_list()[-1]
+
     def get_description(self) -> str:
         req = r.get(BASE_URL + self.url)
         soup = bs4.BeautifulSoup(req.text,  features="html.parser")
@@ -61,8 +64,8 @@ class Anime:
 
     def check_new_episode_came_out(self) -> bool:
         if self.ep_count != self.get_ep_count():
+            self.update_ep_count()
             return True
-        self.update_ep_count()
         return False
 
     def get_ep_count(self) -> int:
@@ -74,7 +77,7 @@ class Anime:
 
     @staticmethod
     def from_dict(json_dct):
-        return Anime(json_dct["title"], json_dct["id"], json_dct["url"], json_dct["ep_count"])
+        return Anime(json_dct["title"], json_dct["id"], json_dct["url"], json_dct["img_url"], json_dct["ep_count"])
 
     def to_dict(self):
         return self.__dict__

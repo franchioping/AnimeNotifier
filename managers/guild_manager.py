@@ -47,6 +47,9 @@ class GuildManager:
         self.u_man.get_user(user.id).add_anime(anime)
         self.u_man.dump()
 
+    def remove_anime_from_user(self, anime: Anime, user: discord.User):
+        self.u_man.get_user(user.id).remove_anime(anime)
+
     async def add_anime(self, anime: Anime):
         self.a_man.add_anime(anime)
 
@@ -62,11 +65,11 @@ class GuildManager:
     def check_anime_in_guild(self, anime_id: int):
         return str(anime_id) in self.anime_data
 
-    def get_anime_channel(self, anime_id: int):
-        return self.anime_data[str(anime_id)]["channel"]
+    def get_anime_channel(self, anime_id: int) -> discord.TextChannel:
+        return self.guild.get_channel(self.anime_data[str(anime_id)]["channel"])
 
-    def get_anime_role(self, anime_id: int):
-        return self.anime_data[str(anime_id)]["role"]
+    def get_anime_role(self, anime_id: int) -> discord.Role:
+        return self.guild.get_role(self.anime_data[str(anime_id)]["role"])
 
     def load(self):
         if os.path.exists(self.guild_file_name):

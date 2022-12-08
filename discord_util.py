@@ -1,5 +1,6 @@
 import discord
 from api.anime import Anime
+from globals import *
 
 
 class ListAnime(discord.ui.View):
@@ -37,7 +38,7 @@ class ListAnime(discord.ui.View):
         await interaction.response.defer()
         self.ret.append({"anime": self.anime_list[self.index], "action": -1})
 
-    @discord.ui.button(label='Exit', style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label='Apply', style=discord.ButtonStyle.blurple)
     async def exit(self, interaction: discord.Interaction, button: discord.ui.Button):
         if len(self.ret) > 0:
             await interaction.response.send_message("Your list has been altered successfully", ephemeral=True)
@@ -47,12 +48,15 @@ class ListAnime(discord.ui.View):
 
 
 def get_embed_for_anime(anime: Anime) -> discord.Embed:
-    e = discord.Embed(title=anime.title, description=anime.get_description())
+    e = discord.Embed(title=anime.title, description=anime.get_description(), url=BASE_URL + anime.url)
     e.set_thumbnail(url=anime.img_url)
     return e
 
 
 def get_embed_for_episode(anime: Anime, ep_num: int) -> discord.Embed:
-    e = discord.Embed(title=f"episode {ep_num} of {anime.title}", description="fill this later with the actual description LMAO")
+    e = discord.Embed(title=f"Episode {ep_num} of {anime.title}", description=f"Episode {ep_num} of {anime.title} anime just dropped! Come check it out with us!",
+                      url=BASE_URL + anime.url + "?ep=" + anime.get_latest_episode().ep_id
+
+                      )
     e.set_thumbnail(url=anime.img_url)
     return e

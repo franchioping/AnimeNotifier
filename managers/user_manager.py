@@ -7,11 +7,23 @@ class AnimeUser:
         self.id: int = id
         self.anime_id_list: list[int] = anime_id_list
 
+    def get_anime_list(self, a_man: AnimeManager) -> list[Anime]:
+        ret = []
+        for ani_id in self.anime_id_list:
+            ret.append(a_man.get_anime_from_id(ani_id))
+        return ret
+
     def add_anime(self, a: Anime):
         self.anime_id_list.append(a.id)
 
+    def remove_anime(self, a: Anime):
+        self.anime_id_list.remove(a.id)
+
     def add_anime_id(self, id: int):
         self.anime_id_list.append(id)
+
+    def remove_anime_id(self, id: int):
+        self.anime_id_list.remove(id)
 
     def to_dict(self):
         return self.__dict__
