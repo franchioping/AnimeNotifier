@@ -62,8 +62,8 @@ class GuildManager:
     async def add_anime(self, anime: Anime):
         self.a_man.add_anime(anime)
 
-        role = await self.create_anime_role(anime.title)
-        channel = await self.create_anime_channel(anime.title, role)
+        role = await self.create_anime_role(anime.title + "-anime")
+        channel = await self.create_anime_channel(anime.title + "-anime", role)
 
         self.anime_data[str(anime.id)] = {
             "channel": channel.id,
