@@ -40,14 +40,24 @@ class GuildManager:
 
         return channel
 
+    async def add_anime_to_user(self, anime: Anime, user: discord.User):
+        if not self.check_anime_in_guild(anime.id):
+            await self.add_anime(anime)
+
+        self.u_man.get_user(user.id).add_anime(anime)
+        self.u_man.dump()
+
     async def add_anime(self, anime: Anime):
         self.a_man.add_anime(anime)
 
         role = await self.create_anime_role(anime.title)
         channel = await self.create_anime_channel(anime.title, role)
 
-        self.anime_data[str(anime.id)]["channel"] = channel.id
-        self.anime_data[str(anime.id)]["role"] = role.id
+        self.anime_data[str(anime.id)] = {
+            "channel": channel.id,
+            "role": role.id
+        }
+        self.dump()
 
     def check_anime_in_guild(self, anime_id: int):
         return str(anime_id) in self.anime_data
@@ -66,7 +76,7 @@ class GuildManager:
                 self.anime_category_id = data["anime_category_id"]
         else:
             with open(self.guild_file_name, "w") as f:
-                json.dump({"anime_channels": {}, "anime_roles": {}}, f)
+                json.dump({"anime_category_id": 0, "anime_data": {}}, f)
 
     def dump(self):
         with open(self.guild_file_name, "r") as f:
@@ -74,4 +84,4 @@ class GuildManager:
         with open(self.guild_file_name, "w") as f:
             data["anime_data"] = self.anime_data
             data["anime_category_id"] = self.anime_category_id
-            json.dump(data, f)
+            json.dump(data, f, indent=4)

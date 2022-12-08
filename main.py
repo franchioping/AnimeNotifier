@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 from api.anime_api import AnimeAPI
 
 from discord_util import *
+from managers.guild_manager import GuildManager
+
+g_man : GuildManager
 
 load_dotenv()
 
@@ -31,8 +34,8 @@ client = MyClient(intents=intents)
 
 @client.event
 async def on_ready():
-    print(f'Logged in as {client.user} (ID: {client.user.id})')
-    print('------')
+    global g_man
+    g_man = GuildManager(client, 1042133536926347324)
 
 
 @client.tree.command(name="search-anime")
@@ -47,6 +50,10 @@ async def search_anime_command(interaction: discord.Interaction, anime_name: str
     await interaction.followup.send("Check the bot DMs to continue")
     await interaction.user.send(view=view, embed=get_embed_for_anime(anime_list[0]))
     await view.wait()
+    for action in view.ret:
+        if action["action"] == 1:
+            await g_man.add_anime_to_user(action["anime"], interaction.user)
+
     print(view.ret)
 
 client.run(token)
