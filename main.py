@@ -52,7 +52,7 @@ async def list_anime_in_msg(interaction: discord.Interaction, anime_list: list[A
         if action["action"] == 1:
             await g_man.add_anime_to_user(action["anime"], interaction.user)
         if action["action"] == -1:
-            g_man.remove_anime_from_user(action["anime"], interaction.user)
+            await g_man.remove_anime_from_user(action["anime"], interaction.user)
 
 
 @client.tree.command(name="search-anime")

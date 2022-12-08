@@ -55,7 +55,7 @@ class GuildManager:
 
         await self.guild.get_member(user.id).add_roles(self.get_anime_role(anime.id))
 
-    def remove_anime_from_user(self, anime: Anime, user: discord.User):
+    async def remove_anime_from_user(self, anime: Anime, user: discord.User):
         self.u_man.get_user(user.id).remove_anime(anime)
         await self.guild.get_member(user.id).remove_roles(self.get_anime_role(anime.id))
 
