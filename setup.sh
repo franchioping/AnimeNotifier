@@ -1,2 +1,2 @@
 #!/bin/bash
-virtualenv .venv && source .venv/bin/activate && pip install -r req.txt
+python -m venv .venv && source .venv/bin/activate && pip install -r req.txt
