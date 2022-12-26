@@ -38,7 +38,7 @@ class ListAnime(discord.ui.View):
         await interaction.response.defer()
         self.ret.append({"anime": self.anime_list[self.index], "action": -1})
 
-    @discord.ui.button(label='Apply', style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label='Done', style=discord.ButtonStyle.blurple)
     async def exit(self, interaction: discord.Interaction, button: discord.ui.Button):
         if len(self.ret) > 0:
             await interaction.response.send_message("Your list has been altered successfully", ephemeral=True)

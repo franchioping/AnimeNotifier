@@ -109,10 +109,10 @@ async def set_anime_category_command(interaction: discord.Interaction, cat: disc
         g_man.anime_category_id = cat.id
         g_man.dump()
 
-        await interaction.response.send_message("Done maybe not really IDGAF", ephemeral=True)
+        await interaction.response.send_message("Done maybe idk", ephemeral=True)
 
 
-@tasks.loop(seconds=60)
+@tasks.loop(seconds=300)
 async def check_for_new_manga():
     await g_man.a_man.check_for_new_episodes(send_notification_message)
 
