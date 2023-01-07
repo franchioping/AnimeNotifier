@@ -17,10 +17,12 @@ class GuildManager:
         self.client = client
         self.guild = self.client.get_guild(guild_id)
 
+        self.guild_file_name = os.getcwd() + "/" + guild_file_name
+
+        print(f"Starting GuildManager with FilePath: {self.guild_file_name}")
+
         self.a_man = AnimeManager(os.getcwd() + "/" + anime_file_name)
         self.u_man = UserManager(os.getcwd() + "/" + users_file_name)
-
-        self.guild_file_name = os.getcwd() + "/" + guild_file_name
 
         self.anime_data = {}
         self.anime_category_id = -1

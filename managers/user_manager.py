@@ -38,6 +38,7 @@ class AnimeUser:
 class UserManager:
     def __init__(self, file_name: str):
         self.file_name: str = file_name
+        print(f"Starting UserManager with FilePath: {self.file_name}")
         self.user_list: list[AnimeUser] = []
         self.load()
 
