@@ -1,5 +1,6 @@
 from managers.anime_manager import *
 import os
+import sys
 
 
 class AnimeUser:
@@ -12,8 +13,6 @@ class AnimeUser:
         for ani_id in self.anime_id_list:
             ret.append(a_man.get_anime_from_id(ani_id))
         return ret
-
-
 
     def add_anime(self, a: Anime):
         self.anime_id_list.append(a.id)
@@ -39,6 +38,7 @@ class UserManager:
     def __init__(self, file_name: str):
         self.file_name: str = file_name
         print(f"Starting UserManager with FilePath: {self.file_name}")
+        sys.stdout.flush()
         self.user_list: list[AnimeUser] = []
         self.load()
 

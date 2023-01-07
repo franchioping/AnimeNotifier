@@ -1,6 +1,7 @@
 import json
 
 import discord
+import sys
 import os
 
 from api.anime import Anime
@@ -20,6 +21,7 @@ class GuildManager:
         self.guild_file_name = os.getcwd() + "/" + guild_file_name
 
         print(f"Starting GuildManager with FilePath: {self.guild_file_name}")
+        sys.stdout.flush()
 
         self.a_man = AnimeManager(os.getcwd() + "/" + anime_file_name)
         self.u_man = UserManager(os.getcwd() + "/" + users_file_name)

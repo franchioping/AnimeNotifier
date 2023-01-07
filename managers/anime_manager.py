@@ -1,5 +1,6 @@
 import json
 import os.path
+import sys
 
 from api import anime
 from api.anime import Anime
@@ -9,6 +10,7 @@ class AnimeManager:
     def __init__(self, file_name: str):
         self.file_name = file_name
         print(f"Starting AnimeManager with FilePath: {self.file_name}")
+        sys.stdout.flush()
         self.anime_list: list[anime.Anime] = []
         self.load()
 
