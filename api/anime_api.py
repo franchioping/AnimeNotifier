@@ -1,10 +1,10 @@
-import requests as r
+import cloudscraper as cld
 import bs4 as bs4
 import json
 from api import anime
 
 from globals import *
-
+r = cld.create_scraper()
 
 class AnimeAPI:
 
