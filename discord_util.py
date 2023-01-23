@@ -54,9 +54,8 @@ def get_embed_for_anime(anime: Anime) -> discord.Embed:
 
 
 def get_embed_for_episode(anime: Anime, ep_num: int) -> discord.Embed:
-    e = discord.Embed(title=f"Episode {ep_num} of {anime.title}", description=f"Episode {ep_num} of {anime.title} anime just dropped! Come check it out with us!",
-                      url=BASE_URL + anime.url + "?ep=" + anime.get_latest_episode().ep_id
-
+    e = discord.Embed(title=f"Episode {ep_num} of {anime.title}", description=f"Episode {ep_num} of {anime.title} anime just released!",
+                      url=BASE_URL + anime.url
                       )
     e.set_thumbnail(url=anime.img_url)
     return e
