@@ -47,4 +47,6 @@ class Anime:
         return Anime(json_dct["title"], json_dct["id"], json_dct["url"], json_dct["img_url"], json_dct["ep_count"])
 
     def to_dict(self):
-        return self.__dict__
+        ret = self.__dict__
+        ret.pop("cld")
+        return ret
