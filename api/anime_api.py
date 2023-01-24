@@ -1,10 +1,12 @@
-import cloudscraper as cld
+import cloudscraper
 import bs4 as bs4
 import json
 from api import anime
 
 from globals import *
-r = cld.create_scraper()
+
+cld = cloudscraper.create_scraper()
+
 
 class AnimeAPI:
 
@@ -18,65 +20,19 @@ class AnimeAPI:
         :return: list of instances of anime.Anime class
         """
 
-        request = r.get(SEARCH_URL + anime_name)
-        parsed = bs4.BeautifulSoup(request.text, features="html.parser")
-        list_div = parsed.find("div", {"class": "film_list-wrap"})
-        item_list = list_div.find_all("div", {"class": "flw-item item-qtip"})
+        req = cld.get("https://9animetv.to/search", params={"keyword": "rent a girlfriend"})
 
-        ret = []
-        for i in item_list:
-            # Here's an example of what "i" looks like
-            """
-            <div class="flw-item item-qtip" data-id="100" data-hasqtip="1" aria-describedby="qtip-1">
-                <div class="film-poster">
-                    <div class="tick-item tick-quality">HD</div>
-                    <div class="tick ltr">
+        soup = bs4.BeautifulSoup(req.text, features="html.parser")
 
-                            <div class="tick-item tick-sub">SUB</div>
+        poster_list = soup.find(
+            "div", {"id": "wrapper"}).find(
+            "div", {"id": "main-wrapper"}).find(
+            "div", {"class": "container"}).find(
+            "div", {"id": "main-content"}).find(
+            "section", {"class": "block_area block_area-anime none-bg"}).find(
+            "div", {"class": "block_area-content block_area-list film_list film_list-grid"}).find(
+            "div", {"class": "film_list-wrap"}).find_all(
+            "div", {"class": "flw-item item-qtip"}
+        )
 
-
-                            <div class="tick-item tick-dub">DUB</div>
-
-                    </div>
-
-                    <div class="tick rtl">
-                        <div class="tick-item tick-eps">
-
-                                Ep 1043
-
-                        </div>
-                    </div>
-
-                    <img data-src="https://img.bunnycdnn.ru/_r/300x400/100/54/90/5490cb32786d4f7fef0f40d7266df532/5490cb32786d4f7fef0f40d7266df532.jpg" class="film-poster-img lazyloaded" alt="One Piece" src="https://img.bunnycdnn.ru/_r/300x400/100/54/90/5490cb32786d4f7fef0f40d7266df532/5490cb32786d4f7fef0f40d7266df532.jpg">
-                    <a href="/watch/one-piece-100" class="film-poster-ahref"><i class="fas fa-play"></i></a>
-                </div>
-                <div class="film-detail">
-                    <h3 class="film-name">
-                        <a href="/watch/one-piece-100" title="One Piece" class="dynamic-name" data-jname="One Piece">One Piece</a>
-                    </h3>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            """
-
-            film_detail = i.find_next("div", {"class": "film-detail"})
-
-            # <h3 class="film-name"> DYNAMIC_NAME (see under) </h3>
-            film_name = film_detail.find_next("h3", {"class": "film-name"})
-
-            # <a href="/watch/one-piece-100" title="One Piece" class="dynamic-name" data-jname="One Piece">One Piece</a>
-            dynamic_name = film_name.find("a", {"class": "dynamic-name"})
-
-            # image
-            img_obj = i.find_next("div", {"class": "film-poster"})
-            img_url = img_obj.find("img")["data-src"]
-
-            title = dynamic_name["title"]
-            url = dynamic_name["href"]
-            anime_id = int(i["data-id"])
-
-            a = anime.Anime(title, anime_id, url, img_url)
-            ret.append(a)
-            if len(ret) >= length:
-                break
-        return ret
+        return [anime.Anime(int(x["data-id"])) for x in poster_list]

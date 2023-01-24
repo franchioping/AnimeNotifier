@@ -5,27 +5,58 @@ import cloudscraper
 
 from globals import *
 
+cld = cloudscraper.create_scraper()
+
 
 class Anime:
-    def __init__(self, title: str, id: int, url: str, img_url: str, ep_count=-1):
-        self.title = str(title)
+    def __init__(self, id: int, ep_count=-1):
         self.id = int(id)
-        self.url = str(url)
-        self.img_url = img_url
+
+        self.title = self.get_title()
+        self.url = self.get_url()
+        self.img_url = self.get_image_url()
+
         self.ep_count = int(ep_count)
-        self.cld = cloudscraper.create_scraper()
+
+    def _get_qtip(self):
+        text = cld.get(f"https://9animetv.to/ajax/movie/qtip/{self.id}").text
+
+        return bs4.BeautifulSoup(text, features="html.parser")
+
+    def get_title(self) -> str:
+        soup = self._get_qtip()
+        return soup.find("div", {"class": "pre-qtip-content"}).find(
+            "div", {"class": "pre-qtip-title"}).text
+
+    def get_url(self) -> str:
+        soup = self._get_qtip()
+        return soup.find("div", {"class": "pre-qtip-content"}).find(
+            "div", {"class": "pre-qtip-button"}).find(
+            "a", {"class": "btn btn-block btn-play"}
+        )["href"]
+
+    def get_image_url(self) -> str:
+        req = cld.get(BASE_URL + self.url)
+        soup = bs4.BeautifulSoup(req.text, features="html.parser")
+        return soup.find("div", {"id": "wrapper"}).find(
+            "div", {"id": "main-wrapper"}).find(
+            "div", {"class": "container"}).find(
+            "div", {"id": "main-content"}).find(
+            "div", {"id": "watch-block"}).find(
+            "div", {"class": "player-wrap"}).find(
+            "div", {"class": "wb_-playerarea"}).find(
+            "div", {"class": "wb__-cover"})["style"].split(
+            "(")[1][:-1]
 
     def get_latest_episode(self) -> int:
-        text = self.cld.get(f"https://9animetv.to/ajax/movie/qtip/{self.id}").text
-
-        soup = bs4.BeautifulSoup(text, features="html.parser")
+        soup = self._get_qtip()
 
         elem = soup.find("div", {"class": "pre-qtip-content"}).find("div", {"class": "pre-qtip-detail"})
         elem = elem.find("span", {"class": "pqd-li"})
         return int(elem.text.replace("\n", "").replace(" ", "").replace("Episode", "").split("/")[0])
 
     def get_description(self) -> str:
-        req = r.get(BASE_URL + self.url)
+        req = cld.get(BASE_URL + self.url)
         soup = bs4.BeautifulSoup(req.text, features="html.parser")
         return soup.find("meta", {"name": "description"})["content"]
 
@@ -44,9 +75,7 @@ class Anime:
 
     @staticmethod
     def from_dict(json_dct):
-        return Anime(json_dct["title"], json_dct["id"], json_dct["url"], json_dct["img_url"], json_dct["ep_count"])
+        return Anime(json_dct["id"], json_dct["ep_count"])
 
     def to_dict(self):
-        ret = self.__dict__
-        ret.pop("cld")
-        return ret
+        return self.__dict__
