@@ -11,16 +11,15 @@ cld = cloudscraper.create_scraper()
 class AnimeAPI:
 
     @staticmethod
-    def search(anime_name: str, length: int = 30) -> list[anime.Anime]:
+    def search(anime_name: str) -> list[anime.Anime]:
         """
         use the sites built-in search to look for anime
 
-        :param length: how many results do ypu want. max is 30
         :param anime_name: anime name to search, doesn't need to be exact, as this will return best matches
         :return: list of instances of anime.Anime class
         """
 
-        req = cld.get("https://9animetv.to/search", params={"keyword": "rent a girlfriend"})
+        req = cld.get("https://9animetv.to/search", params={"keyword": anime_name})
 
         soup = bs4.BeautifulSoup(req.text, features="html.parser")
 

@@ -44,7 +44,7 @@ async def on_ready():
 
 async def list_anime_in_msg(interaction: discord.Interaction, anime_list: list[Anime]):
     view = ListAnime(anime_list)
-    await interaction.response.defer()
+
     await interaction.followup.send("Check the bot DMs to continue")
     await interaction.user.send(view=view, embed=get_embed_for_anime(anime_list[0]))
     await view.wait()
@@ -60,12 +60,14 @@ async def list_anime_in_msg(interaction: discord.Interaction, anime_list: list[A
     anime_name='Name of the anime you want to search for. standard ASCII characters only'
 )
 async def search_anime_command(interaction: discord.Interaction, anime_name: str):
-    anime_list = AnimeAPI.search(anime_name, 10)
+    await interaction.response.defer()
+    anime_list = AnimeAPI.search(anime_name)
     await list_anime_in_msg(interaction, anime_list)
 
 
 @client.tree.command(name="list-anime")
 async def list_anime_command(interaction: discord.Interaction):
+    await interaction.response.defer()
     anime_list = g_man.u_man.get_user(interaction.user.id).get_anime_list(g_man.a_man)
     await list_anime_in_msg(interaction, anime_list)
 
