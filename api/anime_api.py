@@ -1,6 +1,5 @@
 import cloudscraper
 import bs4 as bs4
-import json
 from api import anime
 
 from globals import *
@@ -19,7 +18,7 @@ class AnimeAPI:
         :return: list of instances of anime.Anime class
         """
 
-        req = cld.get("https://9animetv.to/search", params={"keyword": anime_name})
+        req = cld.get(SEARCH_URL, params={"keyword": anime_name})
 
         soup = bs4.BeautifulSoup(req.text, features="html.parser")
 
