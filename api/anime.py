@@ -19,7 +19,7 @@ class Anime:
         self.ep_count = int(ep_count)
 
     def _get_qtip(self):
-        text = cld.get(f"https://9animetv.to/ajax/movie/qtip/{self.id}").text
+        text = cld.get(INFO_URL + str(self.id)).text
 
         return bs4.BeautifulSoup(text, features="html.parser")
 
